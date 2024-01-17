@@ -1,0 +1,29 @@
+﻿
+@page
+@model PraktikSystem.Pages.RegisterModel
+@{
+}
+
+<h2>Register Profile</h2>
+
+<form method = "post">
+<div asp-validation-summary="All"></div>
+
+<div>
+<label asp-for="Username"></label>
+<input asp-for="Username" />
+</div>
+
+<div>
+<label asp-for="Password"></label>
+<input asp-for="Password" />
+</div>
+
+<div>
+<label asp-for="ConfirmPassword"></label>
+<input asp-for="ConfirmPassword" />
+</div>
+
+<button type="submit">Register Now</button>
+
+</form>
