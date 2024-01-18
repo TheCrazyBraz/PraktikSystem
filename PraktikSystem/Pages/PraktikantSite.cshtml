@@ -1,0 +1,57 @@
+﻿@page
+@model PraktikSystem.Pages.PraktikantSiteModel
+@using System.Security.Claims
+@{
+    ViewData["Title"] = "LogBog";
+}
+<h1>Praktikant LogBog</h1>
+<h2>Welcome, @User.Identity.Name!</h2>
+<p>Your role: @User.FindFirst(ClaimTypes.Role)?.Value</p>
+<form method="post">
+    <div>
+        <label asp-for="NyLogBog.Titel"></label>
+        <input asp-for="NyLogBog.Titel" />
+        <span asp-validation-for="NyLogBog.Titel"></span>
+    </div>
+
+    <div>
+        <label asp-for="NyLogBog.Beskrivelse"></label>
+        <textarea asp-for="NyLogBog.Beskrivelse"></textarea>
+        <span asp-validation-for="NyLogBog.Beskrivelse"></span>
+    </div>
+
+    <div>
+        <label asp-for="NyLogBog.Dato"></label>
+        <input asp-for="NyLogBog.Dato" type="date" />
+        <span asp-validation-for="NyLogBog.Dato"></span>
+    </div>
+
+    <button type="submit">Godkend</button>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>Titel</th>
+            <th>Beskrivelse</th>
+            <th>Dato</th>
+            <th>Handling</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var logbog in Model.Logbog)
+        {
+            <tr>
+                <td>@logbog.Titel</td>
+                <td>@logbog.Beskrivelse</td>
+                <td>@logbog.Date.ToShortDateString()</td>
+                <td>
+                    <form method="post" asp-page-handler="Archive" asp-route-id="@logbog.Id">
+                        <button type="submit">Arkiver logbog</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,12 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PraktikSystem.Services;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace PraktikSystem.Pages
 {
     public class LoginModel : PageModel
     {
         private readonly UserService _userService;
+
         [BindProperty]
         public string Username { get; set; }
 
@@ -17,31 +23,49 @@ namespace PraktikSystem.Pages
         {
             _userService = userService;
         }
+
         public void OnGet()
         {
             // Handle GET request
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
-
             var user = _userService.getUser(Username);
-            // Implement your authentication logic here
-            // For simplicity, let's assume a hardcoded username and password
+
             if (user != null && user.Password == Password)
             {
-                // Successful login, redirect to a dashboard or home page
-                return RedirectToPage("/Privacy");
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.Role, user.Role),
+                    // Add other claims as needed
+                };
+
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                var authProperties = new AuthenticationProperties
+                {
+                    // You can add additional properties if needed
+                };
+
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity),
+                    authProperties);
+
+                if (user.Role == "Praktikant")
+                {
+                    return RedirectToPage("/PraktikantSite");
+                }
+                else if (user.Role == "Admin")
+                {
+                    return RedirectToPage("/AdminSite");
+                }
             }
-            else if (user != null && user.Password != Password || user == null)
-            {
-                // Failed login, display an error
-                ModelState.AddModelError(string.Empty, "Invalid username or password");
-                return Page();
-            } else
-            {
-                return Page();
-            }
+
+            ModelState.AddModelError(string.Empty, "Invalid username or password");
+            return Page();
         }
     }
 }
