@@ -1,5 +1,78 @@
 ﻿@page
 @model PraktikSystem.Pages.AdminSiteModel
 @{
+    ViewData["Title"] = "Admin Site";
 }
+
 <h1>Admin Site</h1>
+
+    <label for="sort">Sort by:</label>
+    <select name="sortorder" id="sort" onchange="updateSortOrder()">
+        <option value="asc">Lowest ID</option>
+        <option value="desc">Highest ID</option>
+    </select>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Archive Status</th>
+                <th>Date</th>
+                <th>Archive</th>
+            </tr>
+        </thead>
+        <tbody id="logbogContainer">
+            @if (Model.Logbogs != null && Model.Logbogs.Any())
+            {
+                @foreach (var logbog in Model.Logbogs)
+                {
+                    <tr>
+                        <td>@logbog.Id</td>
+                        <td>@logbog.Titel</td>
+                        <td>@logbog.Beskrivelse</td>
+                        <td>@logbog.ArchiveStatus</td>
+                        <td>@logbog.Dato.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                        <td>
+                            <form method="post" asp-page-handler="Archive" asp-route-id="@logbog.Id" id="archiveForm-@logbog.Id">
+                                <button type="submit">Archive</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6">No Logbogs Found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+<script>
+    function updateSortOrder() {
+        var selectedSortOrder = document.getElementById("sort").value;
+        fetchData(selectedSortOrder);
+    }
+
+    function fetchData(sortOrder) {
+        fetch(`/AdminSite?handler=Sort&sortorder=${sortOrder}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("logbogContainer").innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    // Initial fetch on page load
+    fetchData('asc');
+</script>

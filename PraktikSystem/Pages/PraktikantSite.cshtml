@@ -25,33 +25,43 @@
         <input asp-for="NyLogBog.Dato" type="date" />
         <span asp-validation-for="NyLogBog.Dato"></span>
     </div>
-
-    <button type="submit">Godkend</button>
+    <form method="post">
+        <button type="submit" asp-page-handler="Godkend">Godkend</button>
+    </form>
 </form>
 
-<table>
+<table class="table">
     <thead>
         <tr>
             <th>Titel</th>
             <th>Beskrivelse</th>
             <th>Dato</th>
+            <th>Arkiverings Status</th>
             <th>Handling</th>
         </tr>
     </thead>
 
     <tbody>
-        @foreach (var logbog in Model.Logbog)
+        @if (Model.Logboge != null)
         {
-            <tr>
-                <td>@logbog.Titel</td>
-                <td>@logbog.Beskrivelse</td>
-                <td>@logbog.Date.ToShortDateString()</td>
-                <td>
-                    <form method="post" asp-page-handler="Archive" asp-route-id="@logbog.Id">
-                        <button type="submit">Arkiver logbog</button>
-                    </form>
-                </td>
-            </tr>
+            @foreach (var logbog in Model.Logboge)
+            {
+                <tr>
+                    <td>@logbog.Titel</td>
+                    <td>@logbog.Beskrivelse</td>
+                    <td>@logbog.Dato.ToShortDateString()</td>
+                    <td>@logbog.ArchiveStatus</td>
+                    <td>
+                        <form method="post" asp-page-handler="Archive" asp-route-id="@logbog.Id">
+                            <button type="submit">Arkiver logbog</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <p>No logboge available.</p>
         }
     </tbody>
 </table>
