@@ -7,6 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\Logbog displays\Test.cshtml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Pages\Logbog displays\Test.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Pages\Logbog displays\NewFile.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Pages\Shared\NewFolder\" />
   </ItemGroup>
 

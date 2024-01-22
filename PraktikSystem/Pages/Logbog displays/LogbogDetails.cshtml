@@ -1,0 +1,42 @@
+﻿@page "{id}"
+@model PraktikSystem.Pages.Logbog_displays.LogbogDetailsModel
+
+<h2>Logbog detaljer</h2>
+<form method="post">
+    <div>
+        <label asp-for="Logbog.Id"></label>
+        <input asp-for="Logbog.Id" type="hidden" />
+    </div>
+
+    <div>
+        <label asp-for="Logbog.Titel"></label>
+        <input asp-for="Logbog.Titel">
+        <span asp-validation-for="Logbog.Titel"></span>
+    </div>
+
+    <div>
+        <label asp-for="Logbog.Role"></label>
+        <input asp-for="Logbog.Role">
+        <span asp-validation-for="Logbog.Role"></span>
+    </div>
+
+    <div>
+        <label asp-for="Logbog.Dato"></label>
+        <input asp-for="Logbog.Dato">
+        <span asp-validation-for="Logbog.Dato"></span>
+    </div>
+
+    <div>
+        <label asp-for="Logbog.CheckInTime"></label>
+        <input asp-for="Logbog.CheckInTime" type="time" />
+        <span asp-validation-for="Logbog.CheckInTime"></span>
+    </div>
+
+    <div>
+        <label asp-for="Logbog.CheckOutTime"></label>
+        <input asp-for="Logbog.CheckOutTime" type="time" />
+        <span asp-validation-for="Logbog.CheckOutTime"></span>
+    </div>
+
+    <button type="submit">Gem Ændringer i Logbogen</button>
+</form>

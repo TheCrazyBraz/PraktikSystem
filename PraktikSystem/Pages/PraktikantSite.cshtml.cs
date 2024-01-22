@@ -24,6 +24,10 @@ namespace PraktikSystem.Pages
             Console.WriteLine("OnGet method called in PraktikantSiteModel");
             Logboge = _logbogService.GetAllLogBoge();
 
+            foreach (var logbog in Logboge)
+            {
+                logbog.HoursDone = CalculateHoursDone(logbog);
+            }
         }
 
         private readonly LogBogService _logbogService;
@@ -67,21 +71,37 @@ namespace PraktikSystem.Pages
             catch (Exception ex)
             {
                 Console.WriteLine($"Exception in OnPostGodkend: {ex.Message}");
+
+                // Print model state errors
+                foreach (var key in ModelState.Keys)
+                {
+                    var errors = ModelState[key].Errors;
+                    foreach (var error in errors)
+                    {
+                        Console.WriteLine($"Model state error for {key}: {error.ErrorMessage}");
+                    }
+                }
+
                 return Page();
             }
         }
 
+        public IActionResult OnGetAddLogbog()
+        {
+            NyLogBog = new Logbog(); // Initialize a new Logbog
+            return RedirectToPage("/Logbog_displays/AddLogbog", new { id = NyLogBog.Id });
+        }
 
-
-
-
+        public IActionResult OnGetLogbogDetails(int id)
+        {
+            // Redirect to the EditLogbog page with the selected Logbog ID
+            return RedirectToPage("/Logbog_displays/LogbogDetails", new { id });
+        }
 
         private void UpdateUserClaims()
         {
             // Perform logic to update user claims if necessary
         }
-
-
 
         public IActionResult OnPostArchive(int id)
         {
@@ -90,6 +110,20 @@ namespace PraktikSystem.Pages
 
             return Page();
 
+        }
+
+        public double CalculateHoursDone(Logbog logbog)
+        {
+            if (logbog.StartTime != null && logbog.EndTime != null)
+            {
+                TimeSpan timeDifference = logbog.EndTime - logbog.StartTime;
+
+                logbog.HoursDone = (double)timeDifference.TotalHours;
+
+                return logbog.HoursDone;
+            }
+
+            return 0;
         }
 
     }

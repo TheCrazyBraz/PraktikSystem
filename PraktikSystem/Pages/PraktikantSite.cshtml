@@ -33,11 +33,14 @@
 <table class="table">
     <thead>
         <tr>
+            <th>Username</th>
             <th>Titel</th>
             <th>Beskrivelse</th>
             <th>Dato</th>
             <th>Arkiverings Status</th>
             <th>Handling</th>
+            <th>Timer Brugt</th>
+
         </tr>
     </thead>
 
@@ -47,13 +50,21 @@
             @foreach (var logbog in Model.Logboge)
             {
                 <tr>
+                    <td>@logbog.Username</td>
                     <td>@logbog.Titel</td>
                     <td>@logbog.Beskrivelse</td>
                     <td>@logbog.Dato.ToShortDateString()</td>
                     <td>@logbog.ArchiveStatus</td>
+                    <td>@logbog.HoursDone</td>
                     <td>
                         <form method="post" asp-page-handler="Archive" asp-route-id="@logbog.Id">
                             <button type="submit">Arkiver logbog</button>
+                        </form>
+                    </td>
+
+                    <td>
+                        <form method="post">
+                        <button type="submit" asp-page="/PraktikantSite" asp-page-handler="LogbogDetails" asp-route-id="@logbog.Id">View/Edit</button>
                         </form>
                     </td>
                 </tr>
@@ -65,3 +76,6 @@
         }
     </tbody>
 </table>
+<p>
+    <a asp-page="/Logbog_displays/AddLogbog" asp-page-handler="AddLogbog">Add New Logbog</a>
+</p>

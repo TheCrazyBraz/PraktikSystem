@@ -1,0 +1,23 @@
+﻿@page
+@model PraktikSystem.Pages.Logbog_displays.AddLogbogModel
+
+<h2>Add New Logbog</h2>
+
+<form method="post">
+    <div>
+        <label asp-for="NewLogbog.Titel"></label>
+        <input asp-for="NewLogbog.Titel" />
+    </div>
+
+    <div>
+        <label asp-for="NewLogbog.Role"></label>
+        <input asp-for="NewLogbog.Role" />
+    </div>
+
+    <div>
+        <label asp-for="NewLogbog.Dato"></label>
+        <input asp-for="NewLogbog.Dato" />
+    </div>
+
+    <button type="submit">Add Logbog</button>
+</form>
