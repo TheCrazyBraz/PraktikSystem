@@ -16,7 +16,7 @@ namespace PraktikSystem.Pages
         public string Password { get; set; }
 
         [BindProperty]
-        public string ConfirmPassword {  get; set; } 
+        public string ConfirmPassword { get; set; }
 
         public RegisterModel(UserService userService)
         {
@@ -28,7 +28,7 @@ namespace PraktikSystem.Pages
         }
         public IActionResult OnPost()
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return Page();
             }
@@ -37,7 +37,7 @@ namespace PraktikSystem.Pages
                 ModelState.AddModelError(nameof(Username), "Username already exists");
                 return Page();
             }
-            if (Password != ConfirmPassword) 
+            if (Password != ConfirmPassword)
             {
                 ModelState.AddModelError(nameof(ConfirmPassword), "Passwords does not match.- Please try again.");
                 return Page();

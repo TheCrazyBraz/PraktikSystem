@@ -1,29 +1,74 @@
-﻿
-@page
+﻿@page
 @model PraktikSystem.Pages.RegisterModel
 @{
 }
 
 <h2>Register Profile</h2>
 
-<form method = "post">
-<div asp-validation-summary="All"></div>
+<form method="post">
+    <div asp-validation-summary="All"></div>
 
-<div>
-<label asp-for="Username"></label>
-<input asp-for="Username" />
-</div>
+    <div>
+        <label asp-for="Username"></label>
+        <input asp-for="Username" placeholder="Enter your username" />
+    </div>
 
-<div>
-<label asp-for="Password"></label>
-<input asp-for="Password" />
-</div>
+    <div>
+        <label asp-for="Password"></label>
+        <input asp-for="Password" type="password" placeholder="Enter your password" />
+    </div>
 
-<div>
-<label asp-for="ConfirmPassword"></label>
-<input asp-for="ConfirmPassword" />
-</div>
+    <div>
+        <label asp-for="ConfirmPassword"></label>
+        <input asp-for="ConfirmPassword" type="password" placeholder="Confirm your password" />
+    </div>
 
-<button type="submit">Register Now</button>
+    <button type="submit">Register Now</button>
 
 </form>
+
+<script>
+    function validatePassword() {
+        var password = document.getElementById("Password").value;
+        var confirmPassword = document.getElementById("ConfirmPassword").value;
+
+        if (password !== confirmPassword) {
+            alert("Passwords do not match");
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
+<style>
+    form {
+        max-width: 400px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+    }
+
+    button {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
