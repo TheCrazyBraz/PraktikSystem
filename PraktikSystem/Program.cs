@@ -20,6 +20,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         });
 
 // Add services to the container.
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddSingleton<LogBogService>();
 builder.Services.AddRazorPages();
 builder.Services.AddMvc();

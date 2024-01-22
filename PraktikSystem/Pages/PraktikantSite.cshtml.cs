@@ -5,16 +5,17 @@ using System.Security.Claims;
 using System;
 using System.Collections.Generic;
 using PraktikSystem.Services;
-using static PraktikSystem.Services.UserService;
 
 namespace PraktikSystem.Pages
 {
     public class PraktikantSiteModel : PageModel
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public PraktikantSiteModel(LogBogService logBogService)
+        public PraktikantSiteModel(IHttpContextAccessor httpContextAccessor, LogBogService logbogService)
         {
-            _logbogService = logBogService;
+            _httpContextAccessor = httpContextAccessor;
+            _logbogService = logbogService;
         }
         public void OnGet()
         {
@@ -36,26 +37,44 @@ namespace PraktikSystem.Pages
 
         public IActionResult OnPostGodkend()
         {
-            if (!ModelState.IsValid)
+            try
             {
+                Console.WriteLine("OnPostGodkend method called");
+
+                // Validate the model state
+                if (!ModelState.IsValid)
+                {
+                    Console.WriteLine("Model state is not valid");
+                    return Page();
+                }
+
+                // Pass the logbog to the service method
+                _logbogService.AddLogbog(NyLogBog);
+
+                // Update user claims if necessary
+                UpdateUserClaims();
+
+                // Update the Model.Logboge collection
+                Logboge = _logbogService.GetAllLogBoge();
+                Console.WriteLine($"Logboge count after adding: {Logboge.Count}");
+
+                // Reset the NyLogBog property for a new Logbog entry
+                NyLogBog = new Logbog();
+
+                Console.WriteLine("OnPostGodkend method completed successfully");
                 return Page();
             }
-
-            _logbogService.AddLogbog(NyLogBog);
-
-            // Update user claims if necessary
-            UpdateUserClaims();
-
-            // Update the Model.Logboge collection
-            Logboge = _logbogService.GetAllLogBoge();
-            Console.WriteLine($"Logboge count after adding: {Logboge.Count}");
-
-
-            // Reset the NyLogBog property for a new Logbog entry
-            NyLogBog = new Logbog();
-
-            return Page();
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception in OnPostGodkend: {ex.Message}");
+                return Page();
+            }
         }
+
+
+
+
+
 
         private void UpdateUserClaims()
         {

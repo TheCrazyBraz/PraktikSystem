@@ -33,7 +33,7 @@
                         <td>@logbog.Titel</td>
                         <td>@logbog.Beskrivelse</td>
                         <td>@logbog.ArchiveStatus</td>
-                        <td>@logbog.Dato.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                        <td>@logbog.Dato.ToString("yyyy-MM-dd")</td>
                         <td>
                             <form method="post" asp-page-handler="Archive" asp-route-id="@logbog.Id" id="archiveForm-@logbog.Id">
                                 <button type="submit">Archive</button>
